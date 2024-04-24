@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagina web dinamica</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Formulario de Perfil</h1>
+        <form action="recibir.php" method="post" onsubmit="return validarFormulario()">
+            <h2 for="formacion"><strong>Datos Personales</strong></h2>
+           <label for="nombre"><strong>Nombre y Apellidos:</strong></label><br><br>
+           <input type="text" name = "nombre" placeholder="Nombre y Apellidos" required><br><br><br>
+           
+           <label for="correo"><strong>Correo electronico:</strong></label><br><br>
+           <input type="email" name = "correo" placeholder="Correo electronico" required><br><br><br>
+
+           <label for="telefono"><strong>Telefono:</strong></label><br><br>
+           <input type="text" name = "telefono" placeholder="Telefono" required><br><br><br>
+
+           <label for="Experiencia"><strong>Experiencia laboral:</strong></label><br><br>
+           <div id="ocupacion-container">
+                <input type="experiencia" name = "experiencia[]" placeholder="Experiencia laboral" required>
+           </div>
+           <button type="button" onclick="agregarexperiencia()">Agregar Experiencia Laboral</button> <br><br><br>
+            
+           <h2 for="formacion"><strong>Formacion</strong></h2>
+           <label for="Universidad"><strong>Universidad o Instituto:</strong></label><br><br>
+           <input type="text" name="formacion" placeholder="Universidad o Instituto" required>  
+
+           <label for="certificados"><strong>Certificados o Doctorados</strong></label><br><br>
+           <div id="certificado-container">
+                <input type="text" name="certificados[]" placeholder="Certificados o doctorados" required>  
+           </div>
+           <button type="button" onclick="agregarcertificados()">Agregar Certificados o Doctorados</button> <br><br><br>
+           
+
+           <label for="idioma"><strong>Idiomas que domina:</strong></label><br><br>
+           <div id = "idioma-container">
+                <input type="checkbox" id="Ingles" name="idiomas[]" value="Ingles">
+                <label for="Ingles">Ingles</label><br>
+                <input type="checkbox" id="Portugues" name="idiomas[]" value="Portugues">
+                <label for="Portugues">Portugues</label><br>
+                <input type="checkbox" id="Castellano" name="idiomas[]" value="Castellano">
+                <label for="Castellano">Castellano</label><br>
+           </div>
+           <button type="button" onclick="agregaridioma()">Agregar Idioma</button> <br><br>
+            
+
+            <label for="habilidades"><strong>Habilidades:</strong></label><br>
+            <div id="habilidades-container">
+                <input type="checkbox" id="comunicacion_efectiva" name="habilidades[]" value="Comunicación efectiva">
+                <label for="comunicacion_efectiva">Comunicación efectiva</label><br>
+                <input type="checkbox" id="resolucion_de_problemas" name="habilidades[]" value="Resolución de problemas">
+                <label for="resolucion_de_problemas">Resolución de problemas</label><br>
+                <input type="checkbox" id="liderazgo" name="habilidades[]" value="Liderazgo"> 
+                <label for="liderazgo">Liderazgo</label><br>
+            </div>
+            
+            <button type="button" onclick="agregarHabilidad()">Agregar Habilidad</button><br><br>
+
+            <label for="perfil">Perfil:</label><br><br>
+            <textarea id="perfil" name="perfil" rows="4" cols="50" placeholder="Cuentenos un poco sobre usted"></textarea><br><br>
+
+           <input type="submit" name = "registro">
+           <input type="reset">
+           <br>
+           <script>
+                function agregarexperiencia() {
+                    var container = document.getElementById("ocupacion-container");
+                    var nuevoInput = document.createElement("input");
+                    nuevoInput.type = "text";
+                    nuevoInput.name = "experiencia[]"; // Agregamos corchetes para enviarlo como array
+                    nuevoInput.required = true;
+                    container.appendChild(nuevoInput);
+                    container.appendChild(document.createElement("br"));
+                } 
+
+                function agregarHabilidad() {
+                    var container = document.getElementById("habilidades-container");
+                    var nuevaHabilidad = prompt("Ingrese la nueva habilidad:");
+                    if (nuevaHabilidad) {
+                        var checkbox = document.createElement("input");
+                        checkbox.type = "checkbox";
+                        checkbox.name = "habilidades[]";
+                        checkbox.value = nuevaHabilidad;
+                        var label = document.createElement("label");
+                        label.textContent = nuevaHabilidad;
+                        container.appendChild(checkbox);
+                        container.appendChild(label);
+                        container.appendChild(document.createElement("br"));
+                    }
+                }
+
+                function agregaridioma(){
+                    var container = document.getElementById("idioma-container");
+                    var nuevoidioma = prompt("Ingrese la nueva idioma:");
+                    if (nuevoidioma) {
+                        var checkbox = document.createElement("input");
+                        checkbox.type = "checkbox";
+                        checkbox.name = "idiomas[]";
+                        checkbox.value = nuevoidioma;
+                        var label = document.createElement("label");
+                        label.textContent = nuevoidioma;
+                        container.appendChild(checkbox);
+                        container.appendChild(label);
+                        container.appendChild(document.createElement("br"));
+                    }
+                }
+                function validarFormulario() {
+                // Obtener todas las casillas de verificación de idiomas
+                var idiomas = document.querySelectorAll('input[name="idiomas[]"]');
+                // Obtener todas las casillas de verificación de habilidades
+                var habilidades = document.querySelectorAll('input[name="habilidades[]"]');
+                // Verificar si al menos una casilla de verificación de idioma está marcada
+                var idiomaSeleccionado = Array.from(idiomas).some(function(element) {
+                    return element.checked;
+                });
+                // Verificar si al menos una casilla de verificación de habilidades está marcada
+                var habilidadSeleccionada = Array.from(habilidades).some(function(element) {
+                    return element.checked;
+                });
+                // Mostrar mensaje de alerta si no se han seleccionado idiomas o habilidades
+                if (!idiomaSeleccionado) {
+                    alert("Por favor, seleccione al menos un idioma.");
+                    return false; // Detener el envío del formulario
+                }
+                if (!habilidadSeleccionada) {
+                    alert("Por favor, seleccione al menos una habilidad.");
+                    return false; // Detener el envío del formulario
+                }
+                return true; // Permitir el envío del formulario si todo está bien
+            }
+            function agregarcertificados(){
+                var container = document.getElementById("certificado-container");
+                var nuevoInput = document.createElement("input");
+                nuevoInput.type = "text";
+                nuevoInput.name = "certificados[]"; // Agregamos corchetes para enviarlo como array
+                nuevoInput.required = true;
+                container.appendChild(nuevoInput);
+                container.appendChild(document.createElement("br")); 
+            }
+           </script>
+        </form>
+    </div>
+    <br>
+</body>
+</html>
